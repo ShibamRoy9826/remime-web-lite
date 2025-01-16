@@ -24,6 +24,10 @@ data:text/html;charset=utf-8,%3Cbody%3E%3Cscript%3Enew%20Response(Uint8Array.fro
 > [!NOTE]
 > Fun Fact: The name Remime actually stands for "REMInd ME"
 
+## Screenshot
+
+<img src="images/demo.png">
+
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
 ## Known bugs 🐞
