@@ -19,15 +19,17 @@ button{
   background-color:#89b4fa;
   border-radius:0.5rem;
   border:2px solid #7f849c;
-  margin:1rem;
-  width: 8vw;
-  height: 6vh;
+  margin:0.6rem;
+  width: 8rem;
+  height: 5rem;
   font-size:1.5rem;
   color:#11111b;
   transition:0.5s;
   font-weight:bold;
+  padding:0.3rem;
 }
-button:hover{
+
+button:hover,button:focus{
   background-color:#f38ba8;
 }
 button:active{
@@ -53,7 +55,7 @@ input{
 }
     </style>
     <div class="grp">
-    <button onclick="htype=!htype;">24-hr Clock</button>
+      <button onclick="ct();" id="cbtn">24-hr Clock</button>
     <button onclick="clock();">Clock</button>
     <button onclick="stopwatch();">Stopwatch</button>
     <button onclick="timer();">Timer</button>
@@ -88,6 +90,11 @@ input{
     const stat=document.getElementById("stat");
     const typeBtn=document.getElementById("typeBtn");
     const inps=document.getElementById("inps");
+    const ctb=document.getElementById("cbtn");
+    ctb.style.backgroundColor="#cba6f7";
+    reset.style.backgroundColor="#74c7ec";
+    start.style.backgroundColor="#74c7ec";
+
     let audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
     let inter;
     let htype=1; //1->12hr clock,else 24
@@ -101,16 +108,25 @@ input{
       clearInterval(inter);
       inter=false;
     }
+    function ct(){
+      htype=!htype;
+
+      if(htype){
+        ctb.innerText='24-hr Clock';
+      }else{
+        ctb.innerText='12-hr Clock';
+        }
+    }
     function ring(duration) {
-      var oscillator = audioCtx.createOscillator();
-      var gainNode = audioCtx.createGain();
+      let oscillator = audioCtx.createOscillator();
+      let gainNode = audioCtx.createGain();
       
       oscillator.connect(gainNode);
       gainNode.connect(audioCtx.destination);
       oscillator.start(audioCtx.currentTime);
       oscillator.stop(audioCtx.currentTime + ((duration || 500) / 1000));
+      rst();
 };
-
     //clock
     function clock(){
       inps.style.display="none";
@@ -124,9 +140,9 @@ input{
         if(htype){
           hr.innerText=String(n.getHours()%12).padStart(2,'0');
           if(n.getHours()>=12){
-            stat.innerText="PM";
+            stat.innerText=" PM";
           }else{
-            stat.innerText="AM";
+            stat.innerText=" AM";
           }
         }else{
           stat.innerText="";
@@ -159,6 +175,8 @@ input{
       min.innerText="00";
       sec.innerText="00";
       count=0;
+      start.innerText="Start";
+      start.style.backgroundColor="#74c7ec";
       cl();
     }
     function strt(){
@@ -166,8 +184,10 @@ input{
         clearInterval(inter);
         inter=false;
         start.innerText="Start";
+        start.style.backgroundColor="#74c7ec";
       }else{
         start.innerText="Pause";
+        start.style.backgroundColor="#f38ba8";
         if(mode==1){
           inter=setInterval(cnt,1000);
         }else{
