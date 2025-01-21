@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+*{
+  background-color:#11111b;
+  color:#cdd6f4;
+}
+div{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+h1{
+  text-align:center;
+  font-size:4rem;
+}
+button{
+  background-color:#89b4fa;
+  border-radius:0.5rem;
+  border:2px solid #7f849c;
+  margin:0.6rem;
+  width: 8rem;
+  height: 5rem;
+  font-size:1.5rem;
+  color:#11111b;
+  transition:0.5s;
+  font-weight:bold;
+  padding:0.3rem;
+}
+
+button:hover,button:focus{
+  background-color:#f38ba8;
+}
+button:active{
+  transition:0s;
+  background-color:#ad3d5c;
+}
+input{
+  border-radius:0.5rem;
+  font-size:1.5rem;
+  margin:1rem;
+  width:7rem;
+}
+.grp{
+  height:10vh;
+  width:100vw;
+}
+#time{
+  height:100%;
+  width:100%;
+}
+.txt{
+  font-size:1.5rem;
+}
+    </style>
+    <div class="grp">
+      <button onclick="ct();" id="cbtn">24-hr Clock</button>
+    <button onclick="clock();">Clock</button>
+    <button onclick="stopwatch();">Stopwatch</button>
+    <button onclick="timer();">Timer</button>
+    <button id="strt" onclick="strt();">Start</button>
+    <button id="rst" onclick="rst()">Reset</button>
+    <button id="mute" style="display:none;" onclick="mute()">Mute</button>
+    </div>
+    <div>
+      <div style="display:none;" id="inps">
+        <input type="number" id="hri" value=0/> <span class="txt">hrs,</span><input type="number" id="mini" value=0/><span class="txt">mins, </span><input type="number" id="seci" value=0/><span class="txt"> secs</span>
+      </div>
+
+    </div>
+    <div id="time">
+      <h1>
+      <span id="hr">00</span> :
+      <span id="min">00</span> :
+      <span id="sec">00</span>
+      <span id="stat"></span>
+      </h1>
+    </div>
+  <script>
+
+    const hr=document.getElementById("hr");
+    const min=document.getElementById("min");
+    const sec=document.getElementById("sec");
+    const hri=document.getElementById("hri");
+    const mini=document.getElementById("mini");
+    const seci=document.getElementById("seci");
+    const start=document.getElementById("strt");
+    const reset=document.getElementById("rst");
+    const stat=document.getElementById("stat");
+    const typeBtn=document.getElementById("typeBtn");
+    const inps=document.getElementById("inps");
+    const ctb=document.getElementById("cbtn");
+    ctb.style.backgroundColor="#cba6f7";
+    reset.style.backgroundColor="#74c7ec";
+    start.style.backgroundColor="#74c7ec";
+
+    let audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
+    let inter;
+    let htype=1; //1->12hr clock,else 24
+    let mode=0;
+    let count=0;
+    let target;
+    let n;
+    
+    //extra
+    function cl(){
+      clearInterval(inter);
+      inter=false;
+    }
+    function ct(){
+      htype=!htype;
+
+      if(htype){
+        ctb.innerText='24-hr Clock';
+      }else{
+        ctb.innerText='12-hr Clock';
+        }
+    }
+    function ring(duration) {
+      let oscillator = audioCtx.createOscillator();
+      let gainNode = audioCtx.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + ((duration || 500) / 1000));
+      rst();
+};
+    //clock
+    function clock(){
+      inps.style.display="none";
+      start.style.display="none";
+      reset.style.display="none";
+      if(!inter){
+        inter=setInterval(sm=>{
+        n=new Date();
+        min.innerText=String(n.getMinutes()).padStart(2,'0');
+        sec.innerText=String(n.getSeconds()).padStart(2,'0');
+        if(htype){
+          hr.innerText=String(n.getHours()%12).padStart(2,'0');
+          if(n.getHours()>=12){
+            stat.innerText=" PM";
+          }else{
+            stat.innerText=" AM";
+          }
+        }else{
+          stat.innerText="";
+          hr.innerText=String(n.getHours()).padStart(2,'0');
+        }
+        },1000)
+      }
+    }
+
+    // Stopwatch
+    function cnt(){
+        count++;
+        sec.innerText=String(count%60).padStart(2,'0');
+        min.innerText=String(Math.floor((count-count%60)/60)).padStart(2,'0');
+        hr.innerText=String(Math.floor((count-count%60)/3600)).padStart(2,'0');
+    }
+
+    function cnt2(){
+      if(count==target){
+        ring(3000);
+        clearInterval(inter);
+        inter=false;
+      }else{
+        cnt();
+      }
+    }
+    function rst(){
+      stat.innerText="";
+      hr.innerText="00";
+      min.innerText="00";
+      sec.innerText="00";
+      count=0;
+      start.innerText="Start";
+      start.style.backgroundColor="#74c7ec";
+      cl();
+    }
+    function strt(){
+      if(inter){
+        clearInterval(inter);
+        inter=false;
+        start.innerText="Start";
+        start.style.backgroundColor="#74c7ec";
+      }else{
+        start.innerText="Pause";
+        start.style.backgroundColor="#f38ba8";
+        if(mode==1){
+          inter=setInterval(cnt,1000);
+        }else{
+          inter=setInterval(cnt2,1000);
+          target=hri.value*3600+mini.value*60+seci.value;
+          console.log(target);
+        }
+      }
+    }
+
+    function stopwatch(){
+      mode=1;
+      rst();
+      start.style.display="block";
+      reset.style.display="block";
+      inps.style.display="none";
+    }
+    // Timer
+    function timer(){
+      mode=2;
+      rst();
+      inps.style.display="flex";
+      start.style.display="block";
+      reset.style.display="block";
+    }
+    
+
+    //running clock by default
+    clock();
+
+  </script>
+  </body>
+</html>

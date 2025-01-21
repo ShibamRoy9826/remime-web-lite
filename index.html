@@ -1,223 +1,64 @@
-<!DOCTYPE html>
+<!doctype HTML>
 <html>
+<head>
+  <title>Remime Web Lite demo</title>
+</head>
+
 <body>
 <style>
 *{
   background-color:#11111b;
-  color:#cdd6f4;
-}
-div{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-h1{
+  color: #cdd6f4;
   text-align:center;
-  font-size:4rem;
 }
-button{
-  background-color:#89b4fa;
-  border-radius:0.5rem;
-  border:2px solid #7f849c;
-  margin:0.6rem;
-  width: 8rem;
-  height: 5rem;
-  font-size:1.5rem;
-  color:#11111b;
-  transition:0.5s;
-  font-weight:bold;
-  padding:0.3rem;
+.dataUri{
+  padding:0.5rem;
+  background-color:#1e1e2e;
+  border: 1px solid #45475a;
+  overflow:scroll;
+  margin-left:4rem;
+  margin-right:4rem;
+  border-radius:1rem;
+  margin-bottom: 2rem;
 }
-
-button:hover,button:focus{
-  background-color:#f38ba8;
+.dataUri p{
+  background-color:#1e1e2e;
 }
-button:active{
-  transition:0s;
-  background-color:#ad3d5c;
-}
-input{
-  border-radius:0.5rem;
-  font-size:1.5rem;
-  margin:1rem;
-  width:7rem;
-}
-.grp{
-  height:10vh;
-  width:100vw;
-}
-#time{
-  height:100%;
-  width:100%;
-}
-.txt{
-  font-size:1.5rem;
-}
-    </style>
-    <div class="grp">
-      <button onclick="ct();" id="cbtn">24-hr Clock</button>
-    <button onclick="clock();">Clock</button>
-    <button onclick="stopwatch();">Stopwatch</button>
-    <button onclick="timer();">Timer</button>
-    <button id="strt" onclick="strt();">Start</button>
-    <button id="rst" onclick="rst()">Reset</button>
-    <button id="mute" style="display:none;" onclick="mute()">Mute</button>
-    </div>
-    <div>
-      <div style="display:none;" id="inps">
-        <input type="number" id="hri" value=0/> <span class="txt">hrs,</span><input type="number" id="mini" value=0/><span class="txt">mins, </span><input type="number" id="seci" value=0/><span class="txt"> secs</span>
-      </div>
+  button{
+    background-color:#89b4fa;
+    padding:0.5rem;
+    color:#11111b;
+    border-radius: 1rem;
+  }
+</style>
+<h1>This is just a static website as a demo, <b>not the actual project!</b></h1>
+<h1>The actual project is right below...</b></h1>
+<p>
+Scan the following qr code on another computer(Mobile phone's mostly don't work..<br><br> probably because their camera can't capture so many details...?)
+<br><br> 
+But if you don't want to scan it now, no problems! You can use this dataURI and paste it in your browser to check this out!
+</p>
+<div class="dataUri">
+  <p id="datauriText">data:text/html;charset=utf-8,%3Cbody%3E%3Cscript%3Enew%20Response(Uint8Array.from(atob(%22nVfrcqM2FH4VQiYTSDAG27ksNmR20067PzLd6e4LCCGMahAeSZi42O%2FeIyDBjsG708w4Fkffp3M%2FyIuLKMdyuyZaIrM0WIR5tA0WQm5TEtxUIcKrJc8LFo1wnubcu3TVXzhvn3AU3cezfUQ3VUTFOkVbL07J6%2FyfQkgab4HEJGHSw%2FCP8DlK6ZKNqCSZaEX7xK0keZWjeusNFwNtJOi%2FxJtxku3DQsqc9Rjz%2BCmcxWge5jwifMRRRAvh2XfAaWXeZP2qiTylkXb5ED%2FOPuF5hviSMs%2B%2BV6iSRjLxHtUyIXSZSK8md%2Frd5rRj5yVHTFBJczjmTjTosqE%2FOM58jaKIsqVnTzvjvTjHhbDahyTfEN7jTzx9DNHjGwVhSTekOtDmiPkpCUXT6A7vKVsXsuoLxYk3bQjcLgIPylJ7yddVGwbX2STtnus4m3J%2FKWlGul3nqtu92tvyVVYf1ewX46aMFlAeGk6RED5ogBKr3dNyhlOKVz6WhqnRyMehZMFkNkq49pzmeLUYN8BTgto1zOA8Ssh8XSKJE0B%2Bf1sPopV3HJA%2F1PeZM3lrrFrBsYjLQTAXLRYWwd9EkGFoVkjSYNVKq8PmvzUUyxkJXkDe0ccQ0TqsTWyBB9kXfbxFXRYKkXCqqT73WZGFhGsblBbEd8ZaoC3EGrE2Q5DJIOHCguSB8ICfUTZ0wEc%2BQIWlnZwgCP7VEwAq3viNs%2BNDb1W2gkXitrzau8BxWobmvYvBkl45nN%2FJO6lEMnhXq45vtArM6VoGMMyE1JgPA7PIYFDZSyJ%2FT4laftl%2BjQw94bppyeF9sAYAeBgAZgGAnNNAAZCfVaEQ%2FKwOhSjOIKC2AUGHEVDRAEjPHYEUAg0jVB18kSoeYhikqhoQ0TBCDQ3dnEd2Xft2Nx2f1XD09Uscovv4QbfoIOJhhh8g7lbxM8Q8JVLLfEZKo6Qsykv7cxHR%2FFm9417lbtcKSxKuqOzdQgdC04qt0netle9YIXwSazOPC4bVoIdOMMwKpwTxr%2BqFCI1ixEDwL9x9h4HxUpX%2BRWlFNmWM8B9wql8%2BXR%2FM0Gvv2p10Tx2ZwwvKYGalXJJ%2BZmNOkCR%2FCUzTFMkcRiHU6Zv4D0SZYc6lDR3ACOjFsPv%2BkNkRgbc9Q%2BpgqH8II4xFEOOCc0iUGqmNOF8fS28NttvdOY45dskUilYNzAP%2FmjFfiTYv7VzzdTXYunR9ENN%2BcbzbGTG0vXyPJ%2FGDaqOSqf0GLoJ9XQyNjaqzF8pg6ArDvNV104aXej3ujYl17Vwr%2Fz%2FivxOISDSEL58MdkL5My84EK7cSS%2FHnQSHsKf04ABd%2B%2Fyie8eSby%2B66RlHMt0a1Nqn0txbKhWHWWCqzMLb22OPw6t7p9fmozi%2BIJnYcZpDPRnhSHHMMXx6iexnxOm90089MnairPX95MmoS3yqCqu3kUyvdu2gJVT5VWeipzuOfuRfLcAfBaqZi0NhbesvzBdLdX1nT3PZqOIno9f%2B%2F6cD6uOI9w0VgpzjNVdS3XJ9f%2FV03EEQv7paPONEPqk3rMRXSbshdv2mv713bvJ2yZtv88jf9wtbtYLBWOfjtM1DNRZ6%2BryV90%2BLTkt70QMNk1bDCUP9gumZL%2BcV79txBdeH5rbwHw%3D%3D%22)%2C(e%3D%3Ee.charCodeAt(0)))).body.pipeThrough(new%20DecompressionStream(%22deflate-raw%22)).getReader().read().then(((%7Bvalue%3Ae%7D)%3D%3E(document.open()%2Cdocument.write((new%20TextDecoder).decode(e))%2Cdocument.close()))).catch(console.error)%3C%2Fscript%3E</p>
 
-    </div>
-    <div id="time">
-      <h1>
-      <span id="hr">00</span> :
-      <span id="min">00</span> :
-      <span id="sec">00</span>
-      <span id="stat"></span>
-      </h1>
-    </div>
-  <script>
+<button onclick="copyDataUri()">Copy to clipboard</button>
+</div>
+<div>
+<img src="images/qr.png">
+</div>
+<div>
+  <p>
+  You can check the actual code <a href="https://github.com/ShibamRoy9826/remime-web-lite">Here on my github</a>
+  The readme also has some more details, so I recommend checking that out, if you didn't already!
+  </p>
+</div>
+<script>
+  const d=document.getElementById("datauriText");
+  function copyDataUri(){
+    navigator.clipboard.writeText(d.innerText);
+    alert("Copied DataURI to clipboard! Try pasting it into a new tab!");
+  }
+</script>
 
-    const hr=document.getElementById("hr");
-    const min=document.getElementById("min");
-    const sec=document.getElementById("sec");
-    const hri=document.getElementById("hri");
-    const mini=document.getElementById("mini");
-    const seci=document.getElementById("seci");
-    const start=document.getElementById("strt");
-    const reset=document.getElementById("rst");
-    const stat=document.getElementById("stat");
-    const typeBtn=document.getElementById("typeBtn");
-    const inps=document.getElementById("inps");
-    const ctb=document.getElementById("cbtn");
-    ctb.style.backgroundColor="#cba6f7";
-    reset.style.backgroundColor="#74c7ec";
-    start.style.backgroundColor="#74c7ec";
-
-    let audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
-    let inter;
-    let htype=1; //1->12hr clock,else 24
-    let mode=0;
-    let count=0;
-    let target;
-    let n;
-    
-    //extra
-    function cl(){
-      clearInterval(inter);
-      inter=false;
-    }
-    function ct(){
-      htype=!htype;
-
-      if(htype){
-        ctb.innerText='24-hr Clock';
-      }else{
-        ctb.innerText='12-hr Clock';
-        }
-    }
-    function ring(duration) {
-      let oscillator = audioCtx.createOscillator();
-      let gainNode = audioCtx.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      oscillator.start(audioCtx.currentTime);
-      oscillator.stop(audioCtx.currentTime + ((duration || 500) / 1000));
-      rst();
-};
-    //clock
-    function clock(){
-      inps.style.display="none";
-      start.style.display="none";
-      reset.style.display="none";
-      if(!inter){
-        inter=setInterval(sm=>{
-        n=new Date();
-        min.innerText=String(n.getMinutes()).padStart(2,'0');
-        sec.innerText=String(n.getSeconds()).padStart(2,'0');
-        if(htype){
-          hr.innerText=String(n.getHours()%12).padStart(2,'0');
-          if(n.getHours()>=12){
-            stat.innerText=" PM";
-          }else{
-            stat.innerText=" AM";
-          }
-        }else{
-          stat.innerText="";
-          hr.innerText=String(n.getHours()).padStart(2,'0');
-        }
-        },1000)
-      }
-    }
-
-    // Stopwatch
-    function cnt(){
-        count++;
-        sec.innerText=String(count%60).padStart(2,'0');
-        min.innerText=String(Math.floor((count-count%60)/60)).padStart(2,'0');
-        hr.innerText=String(Math.floor((count-count%60)/3600)).padStart(2,'0');
-    }
-
-    function cnt2(){
-      if(count==target){
-        ring(3000);
-        clearInterval(inter);
-        inter=false;
-      }else{
-        cnt();
-      }
-    }
-    function rst(){
-      stat.innerText="";
-      hr.innerText="00";
-      min.innerText="00";
-      sec.innerText="00";
-      count=0;
-      start.innerText="Start";
-      start.style.backgroundColor="#74c7ec";
-      cl();
-    }
-    function strt(){
-      if(inter){
-        clearInterval(inter);
-        inter=false;
-        start.innerText="Start";
-        start.style.backgroundColor="#74c7ec";
-      }else{
-        start.innerText="Pause";
-        start.style.backgroundColor="#f38ba8";
-        if(mode==1){
-          inter=setInterval(cnt,1000);
-        }else{
-          inter=setInterval(cnt2,1000);
-          target=hri.value*3600+mini.value*60+seci.value;
-          console.log(target);
-        }
-      }
-    }
-
-    function stopwatch(){
-      mode=1;
-      rst();
-      start.style.display="block";
-      reset.style.display="block";
-      inps.style.display="none";
-    }
-    // Timer
-    function timer(){
-      mode=2;
-      rst();
-      inps.style.display="flex";
-      start.style.display="block";
-      reset.style.display="block";
-    }
-    
-
-    //running clock by default
-    clock();
-
-  </script>
-  </body>
+</body>
 </html>
